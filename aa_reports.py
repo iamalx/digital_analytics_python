@@ -15,13 +15,13 @@ print('----------')
 
 def filter_data(html_ls):
     ## returns filtered data 
-    filtered_ls = [ i.get_text().split('\n') for i in html_ls]
+    filtered_ls = [ item.get_text().split('\n') for item in html_ls]
     for i, ls in enumerate(filtered_ls):
         for y, item in enumerate(ls):
             filtered_ls[i][y] = "".join(item.rstrip().lstrip()) 
             filtered_ls[i][y] = filtered_ls[i][y].replace('\t', '')
             filtered_ls[i][y] = filtered_ls[i][y].replace('\r', '')
-    filtered_ls = [list(filter(None, i)) for i in filtered_ls]
+    filtered_ls = [list(filter(None, item)) for item in filtered_ls]
     return filtered_ls
 
 
@@ -73,8 +73,7 @@ def get_google_insights_data():
 
     g_insights_tags = soup.find_all(attrs={"data-state": 'interface.campaign.local.googleMyBusiness.insights'})
     g_insigths_stats_ls = []
-    g_insigths_stats = [i.find_all(class_=['stat', 'title', 'label']) for i in g_insights_tags]
-    # print('g_insigths_stats', g_insigths_stats)
+    g_insigths_stats = [tag.find_all(class_=['stat', 'title', 'label']) for tag in g_insights_tags]
 
     ## filter data
     for i, ls in enumerate(g_insigths_stats):
@@ -97,26 +96,26 @@ def get_google_insights_data():
     return review_values
 
 def get_review_data(): 
-    ## scrap data from Yext API and sets a dictionary of reviews if not using GOOGLE MAP API 
+    ## scrap data from Yext API and set a dictionary of reviews if not using GOOGLE MAP API 
     
     reviewbreak_tags = soup.find_all(attrs={"data-widget-key": 'yext.overview.chart.pie.reviewBreakdown'})
     
     ## set totalReviews
     if reviewbreak_tags:
         reviewbreak_tags = reviewbreak_tags[0].soup.find_all('tspan')
-        reviewbreak_tags_ls = [i.get_text() for i in reviewbreak_tags]
+        reviewbreak_tags_ls = [tag.get_text() for tag in reviewbreak_tags]
 
         review_values['totalReviews'] = reviewbreak_tags_ls[0] if len(reviewbreak_tags_ls) > 0 else 0
 
     ## set avgRating
     rating_tags = soup.find_all(attrs={"data-widget-key" : 'yext.overview.chart.gauge.averageRating'})[0].find_all('span')
-    rating_tags_ls = [i.get_text() for i in rating_tags]
+    rating_tags_ls = [tag.get_text() for tag in rating_tags]
 
     review_values['avgRating'] = rating_tags_ls[1]
 
     # re.compile("yext*")})
 
-    ## set Views
+    ## set Views in review_values dictionary  
     for i, value in enumerate(review_ls): 
         review_tags = soup.find_all(attrs={"data-widget-key" : value})[0].find_all('tspan')
     
@@ -139,11 +138,11 @@ def get_review_data():
 review_dict_new_v = {}
 
 def get_review_new_v():
-    ## scrap data from Yext API and sets a dictionary of reviews if not using GOOGLE MAP API new Version 
+    ## scrap data from Yext API and set a dictionary of reviews if not using GOOGLE MAP API --  new Version 
     reviewbreak_tags2 = soup.find_all(attrs={"data-state": ["interface.campaign.local.yext.reach", "interface.campaign.local.yext.engagement"] })
     ## filter data 
-    reviewbreak_tags_ls2 = [i.get_text().split('\n') for i in reviewbreak_tags2]
-    reviewbreak_tags_ls2 = [list(filter(None, i)) for i in reviewbreak_tags_ls2]
+    reviewbreak_tags_ls2 = [tag.get_text().split('\n') for tag in reviewbreak_tags2]
+    reviewbreak_tags_ls2 = [list(filter(None, tag)) for tag in reviewbreak_tags_ls2]
 
     ## filter data
     for ls in reviewbreak_tags_ls2:
@@ -173,7 +172,7 @@ top_data_dict = {}
 top_data_ls = []
 
 def get_top_data(): 
-    ## get data (ie. top 10 most views, clicks, searches, etc)
+    ## get data (ie. top 10 most views, clicks, searches, et/c.)
     top_data_label_tags = soup.find_all(class_='common-widgets-horizontal-bar')
     top_data_label_tags_ls2 = filter_data(top_data_label_tags)
 
@@ -181,7 +180,7 @@ def get_top_data():
     for ls in top_data_label_tags_ls2:
         top_data_dict[ls[0]] = ls[1:]
 
-get_top_data()
+get_top_data() 
 
 calls_text = ''
 
@@ -192,7 +191,7 @@ def get_top_calls():
     
     if top_data_dict['Callrail Top Sources'][0] !=  'No Calls found for your date': 
         calls_text = 'Lastly' 
-        ## concatinate a string of data 
+
         for i, item in enumerate(top_data_dict['Callrail Top Sources']):
             if i%2 == 0: 
                 if (i+2) != len(top_data_dict['Callrail Top Sources']) or len(top_data_dict['Callrail Top Sources']) == 1 :
@@ -221,6 +220,7 @@ up_sessions = ''
 up_users = ''
 
 def write_reports(): 
+    ## concatinate string of data
     print('\n')
     if 'Sessions' in stat_values:
         analytics = f'Website Analytics: For the month of {month}, there were {stat_values["Sessions"]} sessions{up_sessions}, and {stat_values["Users"]} users{up_users}, with {stat_values["NewSessions"]} of them being new sessions. In addition there were a total of {stat_values["Pageviews"]} page views with an average duration of {stat_values["AvgTimeonPage"]} minutes per page.'
@@ -258,24 +258,26 @@ def write_reports():
 write_reports()
 
 def get_PPC_data():
-
+    ## print PPC data from Goog Ads and FB ads
     if 'Impressions' in stat_values and  stat_values['Impressions'] != '0':
-        print(stat_values["Clicks"])
-        print(stat_values["AmountSpent"])
-        print(stat_values["AverageCPC"])
-        print(stat_values["CTR"])
-        print(stat_values["Impressions"])
+        print(stat_values['Clicks'])
+        print(stat_values['AmountSpent'])
+        print(stat_values['AverageCPC'])
+        print(stat_values['CTR'])
+        print(stat_values['Impressions'])
+    
     if 'Facebook' in top_data_dict['Callrail Top Sources']:
         print(top_data_dict['Callrail Top Sources']['Facebook'])
     else: 
         print(0)
         
     if 'GoogleAdsImpressions' in stat_values and  stat_values['GoogleAdsImpressions'] != '0':
-        print(stat_values["GoogleAdsClicks"])
-        print(stat_values["GoogleCosts"])
-        print(stat_values["GoogleAdsCPC"])
-        print(stat_values["GoogleCTR"])
-        print(stat_values["GoogleAdsImpressions"])
+        print(stat_values['GoogleAdsClicks'])
+        print(stat_values['GoogleCosts'])
+        print(stat_values['GoogleAdsCPC'])
+        print(stat_values['GoogleCTR'])
+        print(stat_values['GoogleAdsImpressions'])
+    
     if 'Google' in top_data_dict['Callrail Top Sources']:
         print(top_data_dict['CallrailTop Sources']['Google'])
     else: 

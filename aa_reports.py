@@ -1,166 +1,20 @@
-# import urllib.request, json 
-# with urllib.request.urlopen('http://talentscale.com/') as url:
-#     data = json.loads(url.read().decode())
-#     print(data)
-
-# import json,urllib.request
-# data = urllib.request.urlopen("https://app.agencyanalytics.com/#/225784/606187/google-search-console/top-queries/").read()
-# output = json.loads(data)
-# print (output)
-
 from bs4 import BeautifulSoup
 import requests
-# import ablantis
 import re
 import urllib
-
-# page2 =  requests.get("ablantis.html")
 import codecs
+# headless browser = import selinun
+
+## set up beatiful soup 
 f = codecs.open("reporthtml.html", 'r', 'utf-8').read()
 soup = BeautifulSoup(f, 'html.parser')
-
 # print(f)
-# headless browser = selinun
-
-
-# url = 'https://app.agencyanalytics.com/#/225784/528537/reports/688002/view?overlay=reportEditor'
-# page = requests.get("http://dataquestio.github.io/web-scraping-pages/simple.html")
-# url = 'http://app.agencyanalytics.com/#/225784/528537/google-analytics/channels/all'
-# url2 = 'https://app.agencyanalytics.com/#/login'
-# page = requests.get(url, headers={'Authorization': 'access_token myToken'})
-
-# == Headers route 
-
-# headers = { 
-# 'accept':'*/*',
-# 'accept-encoding':'gzip, deflate, br',
-# 'accept-language':'en-GB,en;q=0.9,en-US;q=0.8,hi;q=0.7,la;q=0.6',
-# 'cache-control':'no-cache',
-# 'dnt':'1',
-# 'pragma':'no-cache',
-# 'referer':'https',
-# 'sec-fetch-mode':'no-cors',
-# 'sec-fetch-site':'cross-site',
-# 'user-agent': 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.193 Safari/537.36',
-# }
-
-# headers = { 
-# 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
-# 'accept-encoding: gzip, deflate, br'
-# 'accept-language: en-US,en;q=0.9'
-# 'cache-control: max-age=0'
-# 'cookie: aa_referrer=https://www.google.com/; ajs_anonymous_id=%22e55a7e6d-b3fc-4908-bf43-1ce086167188%22; _ga=GA1.2.1156556825.1594192005; _fbp=fb.1.1594192005635.299123261; hubspotutk=5fb434e00a5d695c7169ad81582b0831; __hssrc=1; ajs_user_id=225784; cf_4928_id=da6b0a19-c483-4c95-9f23-da6df5d63cde; _hjid=8f0ebd9f-23e9-43a4-b39c-008a46572687; cf_4928_cta_68721=88638; _gid=GA1.2.917548178.1605484511; __hstc=29847008.5fb434e00a5d695c7169ad81582b0831.1594192005986.1605305510816.1605484511140.193; cf_4928_person_time=1605484525016; _hjAbsoluteSessionInProgress=0; cf_4928_person_last_update=1605484525501; __hssc=29847008.3.1605484511140'
-# 'if-modified-since: Fri, 13 Nov 2020 20:47:16 GMT'
-# 'if-none-match: W/"5faef0d4-a29"'
-# 'referer: https://app.agencyanalytics.com/'
-# 'sec-fetch-dest: document'
-# 'sec-fetch-mode: navigate'
-# 'sec-fetch-site: same-origin'
-# 'sec-fetch-user: ?1'
-# 'upgrade-insecure-requests: 1'
-# 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.193 Safari/537.36'
-# }
-
-
-# response = requests.get(url='https://app.agencyanalytics.com/#/login', headers=headers)
-# print(response.text, 'sssss')
-
-# # == Start the session route 
-# session = requests.Session()
-# print(session)
-
-# # Create the payload
-# payload = {'username': '', 
-#           'password': ''
-#         }
-
-# # Post the payload to the site to log in
-# s = session.post("https://app.agencyanalytics.com/#/login", data=payload)
-# print(s)
-
-# Navigate to the next page and scrape the data
-# s = session.get(url)
-# print(s, 'GETURL')
-
-# page = requests.get(url)
-# soup = BeautifulSoup(s.text, 'html.parser')
-# soup.find('img')['src']
-
-
-
-
-# print(soup, '-------------')
-# print(soup.find_all(id="root"))
-# print(ablantis.htmll)
 
 
 print('----------')
 
-# print(stats_tag_ls)
-# print('----------')
-
-# stat_labels = soup.find_all('span', class_='label')
-# stats_labels_ls = [lb.get_text() for lb in stat_labels]
-
-
-# classes = [value
-#             for element in soup.find_all('span', class_=['negative', 'positive'])
-#             for value in element["class"]]
-# print(classes)
-# change = soup.find_all('span', class_=['negative', 'positive'])
-# print(change)
-
-# tags = soup.find_all( attrs={"data-metric" : "users"})
-# print(tags)
-
-# stat_container = soup.find_all(True, class_= 'stat-container')
-# print(stat_container)
-# print(i, value)
-# if value.find('%') != -1:
-#     value = value.rsplit(' ',1)[0]
-# value = value.replace(' ', '_')
-# stat_values[value] = stats_tag_ls[i]
-# stat_values[i] = value
-# print(stat_values)#     print(stats_labels_ls[i])
-#     print(stats_tag_ls[i])
-# print(stat_values)
-
-stat_values = {}
-month = 'December'
-
-def get_main_cards_data(): 
-    stat_tags = soup.find_all('span', class_=['stat', 'label'])
-    stats_tag_ls = [pt.get_text() for pt in stat_tags]
-    
-    for i, value in enumerate(stats_tag_ls):
-        value = "".join(value.rstrip().lstrip()) 
-        value = value.replace('\n', '').replace('\r', '')
-        filtered_value = ''.join(filter(str.isalpha, value))
-        # print(filtered_value)
-        if filtered_value == '' or filtered_value == 'K':
-            stats_tag_ls[i] = value
-        else:
-            stats_tag_ls[i] = filtered_value
-            stat_values[filtered_value] = stats_tag_ls[i-1] 
-
-get_main_cards_data()
-
-review_values = {}
-review_ls =  [
-    'yext.engagement.chart.pie.calls',
-    'yext.engagement.chart.pie.clicksWebsite',
-    # 'yext.reviews.table',
-    'yext.reach.chart.pie.views',
-    'yext.engagement.chart.pie.drivingDirections',
-    'yext.reach.chart.pie.searches'
-]
-
-#Todo: 
-# rating_tags2 = soup.find_all(attrs={"data-widget-key" : 'yext.overview.chart.pie.reviewBreakdown'})
-# rating_tags_ls2 = [i.get_text() for i in rating_tags2]
-# print(rating_tags2)
-
 def filter_data(html_ls):
+    ## returns filtered data 
     filtered_ls = [ i.get_text().split('\n') for i in html_ls]
     for i, ls in enumerate(filtered_ls):
         for y, item in enumerate(ls):
@@ -170,28 +24,67 @@ def filter_data(html_ls):
     filtered_ls = [list(filter(None, i)) for i in filtered_ls]
     return filtered_ls
 
+
+stat_values = {}
+month = 'December'
+
+def get_main_cards_data(): 
+    ## get main data in a lists  
+    
+    stat_tags = soup.find_all('span', class_=['stat', 'label'])
+    stats_tag_list = [tag.get_text() for tag in stat_tags]
+    
+    for i, value in enumerate(stats_tag_list):
+        ## filter data
+        value = "".join(value.rstrip().lstrip()) 
+        value = value.replace('\n', '').replace('\r', '')
+        filtered_value = ''.join(filter(str.isalpha, value))
+        # print(filtered_value)
+
+        ## set stat_values
+        if filtered_value == '' or filtered_value == 'K':
+            stats_tag_list[i] = value
+        else:
+            stats_tag_list[i] = filtered_value
+            stat_values[filtered_value] = stats_tag_list[i-1] 
+
+get_main_cards_data()
+
+#TODO: 
+# rating_tags2 = soup.find_all(attrs={"data-widget-key" : 'yext.overview.chart.pie.reviewBreakdown'})
+# rating_tags_ls2 = [i.get_text() for i in rating_tags2]
+# print(rating_tags2)
+
 views_breakdown = ''
+review_values = {}
+
+## attributes used to scrap data
+review_ls =  [
+    'yext.engagement.chart.pie.calls',
+    'yext.engagement.chart.pie.clicksWebsite',
+    # 'yext.reviews.table',
+    'yext.reach.chart.pie.views',
+    'yext.engagement.chart.pie.drivingDirections',
+    'yext.reach.chart.pie.searches'
+]
 
 def get_google_insights_data(): 
+    ## scrap data from GOOGLE Maps API and return a dictionary of reviews
+
     g_insights_tags = soup.find_all(attrs={"data-state": 'interface.campaign.local.googleMyBusiness.insights'})
     g_insigths_stats_ls = []
-    # for item in g_insights_tags: 
-    #     # print(item)
-    #     # g_insigths_stats = item.find_all(class_=['stat', 'title'])
-    #     g_insigths_stats = item.find_all(class_=['stat', 'title', 'label'])[0] 
-    #     print(g_insigths_stats)
-    # print('g_insigths_stats', filter_data(g_insights_tags))
-
     g_insigths_stats = [i.find_all(class_=['stat', 'title', 'label']) for i in g_insights_tags]
     # print('g_insigths_stats', g_insigths_stats)
-    
+
+    ## filter data
     for i, ls in enumerate(g_insigths_stats):
         for y, item in enumerate(ls):
             item = item.get_text()
             item = "".join(item.rstrip().lstrip()) 
             item = item.replace('\n', '').replace('\r', '')
             g_insigths_stats_ls.append(item)
-
+    
+    ## set all review values 
     review_values = {
         'Views': {'Views': g_insigths_stats_ls[5]},
         'Searches': [g_insigths_stats_ls[2]],
@@ -204,25 +97,32 @@ def get_google_insights_data():
     return review_values
 
 def get_review_data(): 
+    ## scrap data from Yext API and sets a dictionary of reviews if not using GOOGLE MAP API 
+    
     reviewbreak_tags = soup.find_all(attrs={"data-widget-key": 'yext.overview.chart.pie.reviewBreakdown'})
-    print(reviewbreak_tags)
+    
+    ## set totalReviews
     if reviewbreak_tags:
-        print('reviewbreak_tags')
         reviewbreak_tags = reviewbreak_tags[0].soup.find_all('tspan')
         reviewbreak_tags_ls = [i.get_text() for i in reviewbreak_tags]
-        print(reviewbreak_tags_ls)
+
         review_values['totalReviews'] = reviewbreak_tags_ls[0] if len(reviewbreak_tags_ls) > 0 else 0
 
+    ## set avgRating
     rating_tags = soup.find_all(attrs={"data-widget-key" : 'yext.overview.chart.gauge.averageRating'})[0].find_all('span')
     rating_tags_ls = [i.get_text() for i in rating_tags]
+
     review_values['avgRating'] = rating_tags_ls[1]
 
     # re.compile("yext*")})
+
+    ## set Views
     for i, value in enumerate(review_ls): 
         review_tags = soup.find_all(attrs={"data-widget-key" : value})[0].find_all('tspan')
+    
         if len(review_tags) > 0:  
             review_tags_ls = [item.get_text() for  item in review_tags]
-            # print(review_tags_ls)
+    
             if review_tags_ls[1] == 'Views':
                 review_values['Views'] = {
                     review_tags_ls[1]: review_tags_ls[0],
@@ -235,10 +135,11 @@ def get_review_data():
                 review_values[review_tags_ls[1]] = review_tags_ls[0]
 
 # get_review_data()
+
 review_dict_new_v = {}
 
-
 def get_review_new_v():
+    ## scrap data from Yext API and sets a dictionary of reviews if not using GOOGLE MAP API new Version 
     reviewbreak_tags2 = soup.find_all(attrs={"data-state": ["interface.campaign.local.yext.reach", "interface.campaign.local.yext.engagement"] })
     # print('sss', reviewbreak_tags2)
     # reviewbreak_tags_ls2 = [i.get_text() for i in reviewbreak_tags2]

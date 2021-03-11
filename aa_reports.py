@@ -141,14 +141,15 @@ review_dict_new_v = {}
 def get_review_new_v():
     ## scrap data from Yext API and sets a dictionary of reviews if not using GOOGLE MAP API new Version 
     reviewbreak_tags2 = soup.find_all(attrs={"data-state": ["interface.campaign.local.yext.reach", "interface.campaign.local.yext.engagement"] })
-    # print('sss', reviewbreak_tags2)
-    # reviewbreak_tags_ls2 = [i.get_text() for i in reviewbreak_tags2]
-
+    ## filter data 
     reviewbreak_tags_ls2 = [i.get_text().split('\n') for i in reviewbreak_tags2]
     reviewbreak_tags_ls2 = [list(filter(None, i)) for i in reviewbreak_tags_ls2]
-    print(reviewbreak_tags_ls2)
-    for i, ls in enumerate(reviewbreak_tags_ls2):
+
+    ## filter data
+    for ls in reviewbreak_tags_ls2:
         review_values[ls[2]] = ls[1:]
+    
+    ## set views dictionary 
     review_values['Views'] = {
         review_values['Views'][1]: review_values['Views'][0],
         review_values['Views'][2]: review_values['Views'][4],
@@ -156,60 +157,57 @@ def get_review_new_v():
         review_values['Views'][8]: review_values['Views'][10],
         review_values['Views'][11]: review_values['Views'][13],
     }   
-    print('review_values: ', review_values)
-    print('review_dict_new_v: ', review_dict_new_v)
-    # print('ss', reviewbreak_tags_ls2)
     
     rating_tags = soup.find_all(attrs={"data-state" : 'interface.campaign.local.yext.overview'})
     rating_tags = filter_data(rating_tags)
-    print('ss', rating_tags)
+    ## set review values 
     review_values['avgRating'] = rating_tags[0]
     review_values['totalReviews'] = rating_tags[1]
 
     views_breakdown = f': {review_values["Views"]["Google Map"]} from Google Maps, {review_values["Views"]["Google Search"]} from Google Search, {review_values["Views"]["Yelp"]} from Yelp and {review_values["Views"]["Facebook"]} from Facebook'
-   
+
 # get_review_new_v()
 review_values = get_google_insights_data()
-print('review_g: ',  review_values)
 
 top_data_dict = {}
 top_data_ls = []
 
-
 def get_top_data(): 
+    ## get data (ie. top 10 most views, clicks, searches, etc)
     top_data_label_tags = soup.find_all(class_='common-widgets-horizontal-bar')
     top_data_label_tags_ls2 = filter_data(top_data_label_tags)
-    for i, ls in enumerate(top_data_label_tags_ls2):
-        top_data_dict[ls[0]] = ls[1:]
-    print('top_data_dict: ', top_data_dict)
 
-   
-    # top_data_value_tags = soup.find_all(class_='horizontal-bar-value')
-    # top_data_value_tags_ls = [i.get_text() for i in top_data_value_tags]
-    # print('top_data_value_tags_ls: ', top_data_value_tags_ls)
+    ## set top_data_dict dictionary 
+    for ls in top_data_label_tags_ls2:
+        top_data_dict[ls[0]] = ls[1:]
 
 get_top_data()
 
 calls_text = ''
+
 def get_top_calls():
-    print(top_data_dict['Callrail Top Sources'])
+    ## set top data from calls
+
     calls_text = ''
+    
     if top_data_dict['Callrail Top Sources'][0] !=  'No Calls found for your date': 
         calls_text = 'Lastly' 
+        ## concatinate a string of data 
         for i, item in enumerate(top_data_dict['Callrail Top Sources']):
             if i%2 == 0: 
                 if (i+2) != len(top_data_dict['Callrail Top Sources']) or len(top_data_dict['Callrail Top Sources']) == 1 :
-                    print('h', i)
                     calls_text = calls_text + ', '+ top_data_dict['Callrail Top Sources'][i+1] + ' call came from ' + item 
                 else: 
-                    print('e', i)
                     calls_text = calls_text + ' and ' + top_data_dict['Callrail Top Sources'][i+1] + ' call came from ' + item
+        
         calls_text = calls_text + '.' 
 
     top_call_soures = {}
+    ## set top_data_dict dictionary 
     for i, item in enumerate(top_data_dict['Callrail Top Sources']):
         if i%2 == 0: 
             top_call_soures[item] = top_data_dict['Callrail Top Sources'][i+1]
+    
     top_data_dict['Callrail Top Sources'] =  top_call_soures
 
     return calls_text 

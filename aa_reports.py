@@ -14,14 +14,18 @@ soup = BeautifulSoup(f, 'html.parser')
 print('----------')
 
 def filter_data(html_ls):
-    ## returns filtered data 
+    ## returns filtered data
+ 
     filtered_ls = [ item.get_text().split('\n') for item in html_ls]
+
     for i, ls in enumerate(filtered_ls):
         for y, item in enumerate(ls):
             filtered_ls[i][y] = "".join(item.rstrip().lstrip()) 
             filtered_ls[i][y] = filtered_ls[i][y].replace('\t', '')
             filtered_ls[i][y] = filtered_ls[i][y].replace('\r', '')
+
     filtered_ls = [list(filter(None, item)) for item in filtered_ls]
+
     return filtered_ls
 
 
